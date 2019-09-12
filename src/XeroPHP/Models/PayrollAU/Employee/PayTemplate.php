@@ -1,173 +1,48 @@
 <?php
+
 namespace XeroPHP\Models\PayrollAU\Employee;
 
 use XeroPHP\Remote;
-use XeroPHP\Models\PayrollAU\Payslip\DeductionLine;
-use XeroPHP\Models\PayrollAU\Payslip\ReimbursementLine;
+use XeroPHP\Models\PayrollAU\Employee\PayTemplate\LeaveLine;
+use XeroPHP\Models\PayrollAU\Employee\PayTemplate\SuperLine;
+use XeroPHP\Models\PayrollAU\Employee\PayTemplate\EarningsLine;
+use XeroPHP\Models\PayrollAU\Employee\PayTemplate\DeductionLine;
+use XeroPHP\Models\PayrollAU\Employee\PayTemplate\ReimbursementLine;
 
-class PayTemplate extends Remote\Object
+class PayTemplate extends Remote\Model
 {
-
     /**
-     * The earnings rate lines
+     * The earnings rate lines.
      *
-     * @property float[] EarningsLines
+     * @property EarningsLine[] EarningsLines
      */
 
     /**
-     * The deduction type lines
+     * The deduction type lines.
      *
      * @property DeductionLine[] DeductionLines
      */
 
     /**
-     * The superannuation fund lines
+     * The superannuation fund lines.
      *
-     * @property string SuperLines
+     * @property SuperLine[] SuperLines
      */
 
     /**
-     * The reimbursement type lines
+     * The reimbursement type lines.
      *
      * @property ReimbursementLine[] ReimbursementLines
      */
 
     /**
-     * The leave type lines
+     * The leave type lines.
      *
-     * @property string LeaveLines
+     * @property LeaveLine[] LeaveLines
      */
 
     /**
-     * Xero earnings rate identifier
-     *
-     * @property string EarningsRateID
-     */
-
-    /**
-     * See Leave Type Calculation Types
-     *
-     * @property string CalculationType
-     */
-
-    /**
-     * Hours per week for the EarningsLine. Applicable for ANNUALSALARY CalculationType
-     *
-     * @property string NumberOfUnitsPerWeek
-     */
-
-    /**
-     * Annual Salary of employee
-     *
-     * @property string AnnualSalary
-     */
-
-    /**
-     * Rate per unit of the EarningsLine.
-     *
-     * @property float RatePerUnit
-     */
-
-    /**
-     * Normal number of units for EarningsLine.  Applicable when RateType is “MULTIPLE”
-     *
-     * @property string NormalNumberOfUnits
-     */
-
-    /**
-     * Xero deduction type identifier
-     *
-     * @property string DeductionTypeID
-     */
-
-    /**
-     * The percentage of the SuperLine. Applies on Percentage of Earnings CalculationType.
-     *
-     * @property string Percentage
-     */
-
-    /**
-     * The amount of the reimbursement type
-     *
-     * @property float Amount
-     */
-
-    /**
-     * Xero superannuation fund membership identifier
-     *
-     * @property string SuperMembershipID
-     */
-
-    /**
-     * See Superannuation Contribution Type
-     *
-     * @property string ContributionType
-     */
-
-    /**
-     *  Account code for the Expense Account. i.e 478
-     *
-     * @property string ExpenseAccountCode
-     */
-
-    /**
-     *  Account code for the Liability Account. i.e 826
-     *
-     * @property string LiabilityAccountCode
-     */
-
-    /**
-     * Minimum monthly earnings. Applies for Percentage of Earnings calculation type only
-     *
-     * @property string MinimumMonthlyEarnings
-     */
-
-    /**
-     * Xero reimbursement type identifier
-     *
-     * @property string ReimbursementTypeID
-     */
-
-    /**
-     * The description of the reimbursement type
-     *
-     * @property string Description
-     */
-
-    /**
-     * Xero leave type identifier.
-     *
-     * @property string LeaveTypeID
-     */
-
-    /**
-     * Hours of leave accrued each year
-     *
-     * @property string AnnualNumberOfUnits
-     */
-
-    /**
-     * Normal ordinary earnings number of units for leave line.
-     *
-     * @property string FullTimeNumberOfUnitsPerPeriod
-     */
-
-    /**
-     * Number of units for leave line.
-     *
-     * @property string NumberOfUnits
-     */
-
-    /**
-     * See Final Pay Payout Types If you do not provide any value then by Default it will be NOTPAIDOUT.
-     *
-     * @property string EntitlementFinalPayPayoutType
-     */
-
-
-
-    /**
-     * Get the resource uri of the class (Contacts) etc
+     * Get the resource uri of the class (Contacts) etc.
      *
      * @return string
      */
@@ -176,9 +51,8 @@ class PayTemplate extends Remote\Object
         return 'PayTemplate';
     }
 
-
     /**
-     * Get the root node name.  Just the unqualified classname
+     * Get the root node name.  Just the unqualified classname.
      *
      * @return string
      */
@@ -187,9 +61,8 @@ class PayTemplate extends Remote\Object
         return 'PayTemplate';
     }
 
-
     /**
-     * Get the guid property
+     * Get the guid property.
      *
      * @return string
      */
@@ -198,9 +71,8 @@ class PayTemplate extends Remote\Object
         return '';
     }
 
-
     /**
-     * Get the stem of the API (core.xro) etc
+     * Get the stem of the API (core.xro) etc.
      *
      * @return string|null
      */
@@ -209,9 +81,8 @@ class PayTemplate extends Remote\Object
         return Remote\URL::API_PAYROLL;
     }
 
-
     /**
-     * Get the supported methods
+     * Get the supported methods.
      */
     public static function getSupportedMethods()
     {
@@ -220,45 +91,23 @@ class PayTemplate extends Remote\Object
     }
 
     /**
-     *
      * Get the properties of the object.  Indexed by constants
      *  [0] - Mandatory
      *  [1] - Type
      *  [2] - PHP type
      *  [3] - Is an Array
-     *  [4] - Saves directly
+     *  [4] - Saves directly.
      *
      * @return array
      */
     public static function getProperties()
     {
         return [
-            'EarningsLines' => [false, self::PROPERTY_TYPE_FLOAT, null, true, false],
-            'DeductionLines' => [false, self::PROPERTY_TYPE_OBJECT, 'PayrollAU\\Payslip\\DeductionLine', true, false],
-            'SuperLines' => [false, self::PROPERTY_TYPE_STRING, null, false, false],
-            'ReimbursementLines' => [false, self::PROPERTY_TYPE_OBJECT, 'PayrollAU\\Payslip\\ReimbursementLine', true, false],
-            'LeaveLines' => [false, self::PROPERTY_TYPE_STRING, null, false, false],
-            'EarningsRateID' => [false, self::PROPERTY_TYPE_STRING, null, false, false],
-            'CalculationType' => [false, self::PROPERTY_TYPE_STRING, null, false, false],
-            'NumberOfUnitsPerWeek' => [false, self::PROPERTY_TYPE_ENUM, null, false, false],
-            'AnnualSalary' => [false, self::PROPERTY_TYPE_STRING, null, false, false],
-            'RatePerUnit' => [false, self::PROPERTY_TYPE_FLOAT, null, false, false],
-            'NormalNumberOfUnits' => [false, self::PROPERTY_TYPE_ENUM, null, false, false],
-            'DeductionTypeID' => [false, self::PROPERTY_TYPE_STRING, null, false, false],
-            'Percentage' => [false, self::PROPERTY_TYPE_STRING, null, false, false],
-            'Amount' => [false, self::PROPERTY_TYPE_FLOAT, null, false, false],
-            'SuperMembershipID' => [false, self::PROPERTY_TYPE_STRING, null, false, false],
-            'ContributionType' => [false, self::PROPERTY_TYPE_ENUM, null, false, false],
-            'ExpenseAccountCode' => [false, self::PROPERTY_TYPE_STRING, null, false, false],
-            'LiabilityAccountCode' => [false, self::PROPERTY_TYPE_STRING, null, false, false],
-            'MinimumMonthlyEarnings' => [false, self::PROPERTY_TYPE_STRING, null, false, false],
-            'ReimbursementTypeID' => [false, self::PROPERTY_TYPE_STRING, null, false, false],
-            'Description' => [false, self::PROPERTY_TYPE_STRING, null, false, false],
-            'LeaveTypeID' => [false, self::PROPERTY_TYPE_STRING, null, false, false],
-            'AnnualNumberOfUnits' => [false, self::PROPERTY_TYPE_STRING, null, false, false],
-            'FullTimeNumberOfUnitsPerPeriod' => [false, self::PROPERTY_TYPE_STRING, null, false, false],
-            'NumberOfUnits' => [false, self::PROPERTY_TYPE_STRING, null, false, false],
-            'EntitlementFinalPayPayoutType' => [false, self::PROPERTY_TYPE_ENUM, null, false, false]
+            'EarningsLines' => [false, self::PROPERTY_TYPE_OBJECT, 'PayrollAU\\Employee\\PayTemplate\\EarningsLine', true, false],
+            'DeductionLines' => [false, self::PROPERTY_TYPE_OBJECT, 'PayrollAU\\Employee\\PayTemplate\\DeductionLine', true, false],
+            'SuperLines' => [false, self::PROPERTY_TYPE_OBJECT, 'PayrollAU\\Employee\\PayTemplate\\SuperLine', false, false],
+            'ReimbursementLines' => [false, self::PROPERTY_TYPE_OBJECT, 'PayrollAU\\Employee\\PayTemplate\\ReimbursementLine', true, false],
+            'LeaveLines' => [false, self::PROPERTY_TYPE_OBJECT, 'PayrollAU\\Employee\\PayTemplate\\LeaveLine', false, false],
         ];
     }
 
@@ -268,8 +117,7 @@ class PayTemplate extends Remote\Object
     }
 
     /**
-     * @return float[]|Remote\Collection
-     * Always returns a collection, switch is for type hinting
+     * @return EarningsLine[]|Remote\Collection
      */
     public function getEarningsLines()
     {
@@ -277,22 +125,23 @@ class PayTemplate extends Remote\Object
     }
 
     /**
-     * @param float $value
+     * @param EarningsLine $value
+     *
      * @return PayTemplate
      */
-    public function addEarningsLine($value)
+    public function addEarningsLine(EarningsLine $value)
     {
         $this->propertyUpdated('EarningsLines', $value);
-        if (!isset($this->_data['EarningsLines'])) {
+        if (! isset($this->_data['EarningsLines'])) {
             $this->_data['EarningsLines'] = new Remote\Collection();
         }
         $this->_data['EarningsLines'][] = $value;
+
         return $this;
     }
 
     /**
      * @return DeductionLine[]|Remote\Collection
-     * Always returns a collection, switch is for type hinting
      */
     public function getDeductionLines()
     {
@@ -301,20 +150,22 @@ class PayTemplate extends Remote\Object
 
     /**
      * @param DeductionLine $value
+     *
      * @return PayTemplate
      */
     public function addDeductionLine(DeductionLine $value)
     {
         $this->propertyUpdated('DeductionLines', $value);
-        if (!isset($this->_data['DeductionLines'])) {
+        if (! isset($this->_data['DeductionLines'])) {
             $this->_data['DeductionLines'] = new Remote\Collection();
         }
         $this->_data['DeductionLines'][] = $value;
+
         return $this;
     }
 
     /**
-     * @return string
+     * @return Remote\Collection|SuperLine[]
      */
     public function getSuperLines()
     {
@@ -322,19 +173,23 @@ class PayTemplate extends Remote\Object
     }
 
     /**
-     * @param string $value
+     * @param SuperLine $value
+     *
      * @return PayTemplate
      */
-    public function setSuperLine($value)
+    public function addSuperLine(SuperLine $value)
     {
         $this->propertyUpdated('SuperLines', $value);
-        $this->_data['SuperLines'] = $value;
+        if (! isset($this->_data['SuperLines'])) {
+            $this->_data['SuperLines'] = new Remote\Collection();
+        }
+        $this->_data['SuperLines'][] = $value;
+
         return $this;
     }
 
     /**
      * @return ReimbursementLine[]|Remote\Collection
-     * Always returns a collection, switch is for type hinting
      */
     public function getReimbursementLines()
     {
@@ -343,20 +198,22 @@ class PayTemplate extends Remote\Object
 
     /**
      * @param ReimbursementLine $value
+     *
      * @return PayTemplate
      */
     public function addReimbursementLine(ReimbursementLine $value)
     {
         $this->propertyUpdated('ReimbursementLines', $value);
-        if (!isset($this->_data['ReimbursementLines'])) {
+        if (! isset($this->_data['ReimbursementLines'])) {
             $this->_data['ReimbursementLines'] = new Remote\Collection();
         }
         $this->_data['ReimbursementLines'][] = $value;
+
         return $this;
     }
 
     /**
-     * @return string
+     * @return LeaveLine[]|Remote\Collection
      */
     public function getLeaveLines()
     {
@@ -364,414 +221,18 @@ class PayTemplate extends Remote\Object
     }
 
     /**
-     * @param string $value
+     * @param LeaveLine $value
+     *
      * @return PayTemplate
      */
-    public function setLeaveLine($value)
+    public function addLeaveLine(LeaveLine $value)
     {
         $this->propertyUpdated('LeaveLines', $value);
-        $this->_data['LeaveLines'] = $value;
+        if (! isset($this->_data['LeaveLines'])) {
+            $this->_data['LeaveLines'] = new Remote\Collection();
+        }
+        $this->_data['LeaveLines'][] = $value;
+
         return $this;
     }
-
-    /**
-     * @return string
-     */
-    public function getEarningsRateID()
-    {
-        return $this->_data['EarningsRateID'];
-    }
-
-    /**
-     * @param string $value
-     * @return PayTemplate
-     */
-    public function setEarningsRateID($value)
-    {
-        $this->propertyUpdated('EarningsRateID', $value);
-        $this->_data['EarningsRateID'] = $value;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCalculationType()
-    {
-        return $this->_data['CalculationType'];
-    }
-
-    /**
-     * @param string $value
-     * @return PayTemplate
-     */
-    public function setCalculationType($value)
-    {
-        $this->propertyUpdated('CalculationType', $value);
-        $this->_data['CalculationType'] = $value;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getNumberOfUnitsPerWeek()
-    {
-        return $this->_data['NumberOfUnitsPerWeek'];
-    }
-
-    /**
-     * @param string $value
-     * @return PayTemplate
-     */
-    public function setNumberOfUnitsPerWeek($value)
-    {
-        $this->propertyUpdated('NumberOfUnitsPerWeek', $value);
-        $this->_data['NumberOfUnitsPerWeek'] = $value;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getAnnualSalary()
-    {
-        return $this->_data['AnnualSalary'];
-    }
-
-    /**
-     * @param string $value
-     * @return PayTemplate
-     */
-    public function setAnnualSalary($value)
-    {
-        $this->propertyUpdated('AnnualSalary', $value);
-        $this->_data['AnnualSalary'] = $value;
-        return $this;
-    }
-
-    /**
-     * @return float
-     */
-    public function getRatePerUnit()
-    {
-        return $this->_data['RatePerUnit'];
-    }
-
-    /**
-     * @param float $value
-     * @return PayTemplate
-     */
-    public function setRatePerUnit($value)
-    {
-        $this->propertyUpdated('RatePerUnit', $value);
-        $this->_data['RatePerUnit'] = $value;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getNormalNumberOfUnits()
-    {
-        return $this->_data['NormalNumberOfUnits'];
-    }
-
-    /**
-     * @param string $value
-     * @return PayTemplate
-     */
-    public function setNormalNumberOfUnit($value)
-    {
-        $this->propertyUpdated('NormalNumberOfUnits', $value);
-        $this->_data['NormalNumberOfUnits'] = $value;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getDeductionTypeID()
-    {
-        return $this->_data['DeductionTypeID'];
-    }
-
-    /**
-     * @param string $value
-     * @return PayTemplate
-     */
-    public function setDeductionTypeID($value)
-    {
-        $this->propertyUpdated('DeductionTypeID', $value);
-        $this->_data['DeductionTypeID'] = $value;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getPercentage()
-    {
-        return $this->_data['Percentage'];
-    }
-
-    /**
-     * @param string $value
-     * @return PayTemplate
-     */
-    public function setPercentage($value)
-    {
-        $this->propertyUpdated('Percentage', $value);
-        $this->_data['Percentage'] = $value;
-        return $this;
-    }
-
-    /**
-     * @return float
-     */
-    public function getAmount()
-    {
-        return $this->_data['Amount'];
-    }
-
-    /**
-     * @param float $value
-     * @return PayTemplate
-     */
-    public function setAmount($value)
-    {
-        $this->propertyUpdated('Amount', $value);
-        $this->_data['Amount'] = $value;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getSuperMembershipID()
-    {
-        return $this->_data['SuperMembershipID'];
-    }
-
-    /**
-     * @param string $value
-     * @return PayTemplate
-     */
-    public function setSuperMembershipID($value)
-    {
-        $this->propertyUpdated('SuperMembershipID', $value);
-        $this->_data['SuperMembershipID'] = $value;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getContributionType()
-    {
-        return $this->_data['ContributionType'];
-    }
-
-    /**
-     * @param string $value
-     * @return PayTemplate
-     */
-    public function setContributionType($value)
-    {
-        $this->propertyUpdated('ContributionType', $value);
-        $this->_data['ContributionType'] = $value;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getExpenseAccountCode()
-    {
-        return $this->_data['ExpenseAccountCode'];
-    }
-
-    /**
-     * @param string $value
-     * @return PayTemplate
-     */
-    public function setExpenseAccountCode($value)
-    {
-        $this->propertyUpdated('ExpenseAccountCode', $value);
-        $this->_data['ExpenseAccountCode'] = $value;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getLiabilityAccountCode()
-    {
-        return $this->_data['LiabilityAccountCode'];
-    }
-
-    /**
-     * @param string $value
-     * @return PayTemplate
-     */
-    public function setLiabilityAccountCode($value)
-    {
-        $this->propertyUpdated('LiabilityAccountCode', $value);
-        $this->_data['LiabilityAccountCode'] = $value;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getMinimumMonthlyEarnings()
-    {
-        return $this->_data['MinimumMonthlyEarnings'];
-    }
-
-    /**
-     * @param string $value
-     * @return PayTemplate
-     */
-    public function setMinimumMonthlyEarning($value)
-    {
-        $this->propertyUpdated('MinimumMonthlyEarnings', $value);
-        $this->_data['MinimumMonthlyEarnings'] = $value;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getReimbursementTypeID()
-    {
-        return $this->_data['ReimbursementTypeID'];
-    }
-
-    /**
-     * @param string $value
-     * @return PayTemplate
-     */
-    public function setReimbursementTypeID($value)
-    {
-        $this->propertyUpdated('ReimbursementTypeID', $value);
-        $this->_data['ReimbursementTypeID'] = $value;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getDescription()
-    {
-        return $this->_data['Description'];
-    }
-
-    /**
-     * @param string $value
-     * @return PayTemplate
-     */
-    public function setDescription($value)
-    {
-        $this->propertyUpdated('Description', $value);
-        $this->_data['Description'] = $value;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getLeaveTypeID()
-    {
-        return $this->_data['LeaveTypeID'];
-    }
-
-    /**
-     * @param string $value
-     * @return PayTemplate
-     */
-    public function setLeaveTypeID($value)
-    {
-        $this->propertyUpdated('LeaveTypeID', $value);
-        $this->_data['LeaveTypeID'] = $value;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getAnnualNumberOfUnits()
-    {
-        return $this->_data['AnnualNumberOfUnits'];
-    }
-
-    /**
-     * @param string $value
-     * @return PayTemplate
-     */
-    public function setAnnualNumberOfUnit($value)
-    {
-        $this->propertyUpdated('AnnualNumberOfUnits', $value);
-        $this->_data['AnnualNumberOfUnits'] = $value;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getFullTimeNumberOfUnitsPerPeriod()
-    {
-        return $this->_data['FullTimeNumberOfUnitsPerPeriod'];
-    }
-
-    /**
-     * @param string $value
-     * @return PayTemplate
-     */
-    public function setFullTimeNumberOfUnitsPerPeriod($value)
-    {
-        $this->propertyUpdated('FullTimeNumberOfUnitsPerPeriod', $value);
-        $this->_data['FullTimeNumberOfUnitsPerPeriod'] = $value;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getNumberOfUnits()
-    {
-        return $this->_data['NumberOfUnits'];
-    }
-
-    /**
-     * @param string $value
-     * @return PayTemplate
-     */
-    public function setNumberOfUnit($value)
-    {
-        $this->propertyUpdated('NumberOfUnits', $value);
-        $this->_data['NumberOfUnits'] = $value;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getEntitlementFinalPayPayoutType()
-    {
-        return $this->_data['EntitlementFinalPayPayoutType'];
-    }
-
-    /**
-     * @param string $value
-     * @return PayTemplate
-     */
-    public function setEntitlementFinalPayPayoutType($value)
-    {
-        $this->propertyUpdated('EntitlementFinalPayPayoutType', $value);
-        $this->_data['EntitlementFinalPayPayoutType'] = $value;
-        return $this;
-    }
-
-
 }
