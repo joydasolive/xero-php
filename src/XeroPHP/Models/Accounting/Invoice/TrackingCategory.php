@@ -3,7 +3,7 @@ namespace XeroPHP\Models\Accounting\Invoice;
 
 use XeroPHP\Remote;
 
-class TrackingCategory extends Remote\Object
+class TrackingCategory extends Remote\Model
 {
 
     /**
