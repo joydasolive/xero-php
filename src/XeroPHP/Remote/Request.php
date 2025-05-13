@@ -5,6 +5,7 @@ namespace XeroPHP\Remote;
 use GuzzleHttp\Psr7\Request as PsrRequest;
 use GuzzleHttp\Psr7\Uri;
 use XeroPHP\Application;
+use XeroPHP\Remote\Exception\RateLimitExceededException;
 
 class Request
 {
@@ -79,7 +80,7 @@ class Request
         }
 
         //Default to XML so you get the  xsi:type attribute in the root node.
-        $this->setHeader(self::HEADER_ACCEPT, self::CONTENT_TYPE_XML);
+        $this->setHeader(self::HEADER_ACCEPT, $app->getConfigOption('xero', 'default_content_type'));
 
         $xero_config = $this->app->getConfig('xero');
         if (isset($xero_config['unitdp'])) {
@@ -108,9 +109,23 @@ class Request
 
         try {
             $guzzleResponse = $this->app->getTransport()->send($request);
-        }  catch (\GuzzleHttp\Exception\BadResponseException $e) {
+        } catch (\GuzzleHttp\Exception\BadResponseException $e) {
             $guzzleResponse = $e->getResponse();
         }
+        
+        if($guzzleResponse->hasHeader('X-AppMinLimit-Remaining')){
+            $this->app->updateAppRateLimit(
+                $guzzleResponse->getHeader('X-AppMinLimit-Remaining')[0]
+            );
+        }
+        
+        if($guzzleResponse->hasHeader('X-DayLimit-Remaining')){
+            $this->app->updateTenantRateLimits(
+                $guzzleResponse->getHeader('X-DayLimit-Remaining')[0],
+                $guzzleResponse->getHeader('X-MinLimit-Remaining')[0]
+            );
+        }
+
         $this->response = new Response($this,
             $guzzleResponse->getBody()->getContents(),
             $guzzleResponse->getStatusCode(),
@@ -152,7 +167,7 @@ class Request
     }
 
     /**
-     * @return \XeroPHP\Remote\Response
+     * @return \XeroPHP\Remote\Response|null
      */
     public function getResponse()
     {

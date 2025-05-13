@@ -4,6 +4,7 @@ namespace XeroPHP\Remote;
 
 use XeroPHP\Helpers;
 use XeroPHP\Application;
+use XeroPHP\Remote\Exception\RequiredFieldException;
 
 /**
  * Class Model.
@@ -66,7 +67,7 @@ abstract class Model implements ObjectInterface, \JsonSerializable, \ArrayAccess
      * Holds a ref to the application that was used to load the object,
      * enables shorthand $object->save();.
      *
-     * @var Application
+     * @var Application|null
      */
     protected $_application;
 
@@ -76,6 +77,11 @@ abstract class Model implements ObjectInterface, \JsonSerializable, \ArrayAccess
         $this->_dirty = [];
         $this->_data = [];
         $this->_associated_objects = [];
+    }
+
+    public static function make(Application $application = null)
+    {
+        return new static($application);
     }
 
     /**
@@ -390,10 +396,13 @@ abstract class Model implements ObjectInterface, \JsonSerializable, \ArrayAccess
             //If it's got a GUID, it's already going to be valid almost all cases
             if (! $this->hasGUID() && $mandatory) {
                 if (! isset($this->_data[$property]) || empty($this->_data[$property])) {
-                    throw new Exception(
+                    $class = get_class($this);
+                    throw new RequiredFieldException(
+                        $class,
+                        $property,
                         sprintf(
                             '%s::$%s is mandatory and is either missing or empty.',
-                            get_class($this),
+                            $class,
                             $property
                         )
                     );
@@ -442,7 +451,7 @@ abstract class Model implements ObjectInterface, \JsonSerializable, \ArrayAccess
      *
      * @throws Exception
      *
-     * @return Response|null
+     * @return Response
      */
     public function delete()
     {
@@ -515,7 +524,9 @@ abstract class Model implements ObjectInterface, \JsonSerializable, \ArrayAccess
 
     protected function propertyUpdated($property, $value)
     {
-        if (! isset($this->_data[$property]) || $this->_data[$property] !== $value) {
+        $currentValue = isset($this->_data[$property]) ? $this->_data[$property] : null;
+
+        if ($currentValue !== $value) {
             //If this object can update itself, set its own dirty flag, otherwise, set its parent's.
             if (count(array_intersect($this::getSupportedMethods(), [Request::METHOD_PUT, Request::METHOD_POST])) > 0) {
                 //Object can update itself
@@ -544,8 +555,9 @@ abstract class Model implements ObjectInterface, \JsonSerializable, \ArrayAccess
     /**
      * JSON Encode overload to pull out hidden properties.
      *
-     * @return string
+     * @return array
      */
+    #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
         return $this->toStringArray();
@@ -556,6 +568,7 @@ abstract class Model implements ObjectInterface, \JsonSerializable, \ArrayAccess
      *
      * @return bool
      */
+    #[\ReturnTypeWillChange]
     public function offsetExists($offset)
     {
         return $this->__isset($offset);
@@ -566,6 +579,7 @@ abstract class Model implements ObjectInterface, \JsonSerializable, \ArrayAccess
      *
      * @return mixed
      */
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         return $this->__get($offset);
@@ -577,6 +591,7 @@ abstract class Model implements ObjectInterface, \JsonSerializable, \ArrayAccess
      *
      * @return mixed
      */
+    #[\ReturnTypeWillChange]
     public function offsetSet($offset, $value)
     {
         return $this->__set($offset, $value);
@@ -585,6 +600,7 @@ abstract class Model implements ObjectInterface, \JsonSerializable, \ArrayAccess
     /**
      * @param mixed $offset
      */
+    #[\ReturnTypeWillChange]
     public function offsetUnset($offset)
     {
         unset($this->_data[$offset]);
