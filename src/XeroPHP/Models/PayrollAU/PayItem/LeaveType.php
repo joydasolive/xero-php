@@ -32,6 +32,26 @@ class LeaveType extends Remote\Model
      */
 
     /**
+     * Set this to indicate the category of leave. This is a required field
+     * https://developer.xero.com/documentation/api/payrollau/payitems#post-payitems--elements-for-leavetypes
+     * Valid options are from LeaveCategoryCode
+     * - ANNUALLEAVE
+     * - LONGSERVICELEAVE
+     * - PERSONALSICKCARERSLEAVE
+     * - ROSTEREDDAYOFF
+     * - TIMEOFFINLIEU
+     * - COMPASSIONATEANDBEREAVEMENTLEAVE
+     * - STUDYLEAVE
+     * - FAMILYANDDOMESTICVIOLENCELEAVE
+     * - SPECIALPAIDLEAVE
+     * - COMMUNITYSERVICELEAVE
+     * - JURYDUTYLEAVE
+     * - DEFENCERESERVELEAVE
+     *
+     * @property string LeaveCategoryCode
+     */
+
+    /**
      * Xero identifier.
      *
      * @property string LeaveTypeID
@@ -116,6 +136,7 @@ class LeaveType extends Remote\Model
             'TypeOfUnits' => [true, self::PROPERTY_TYPE_STRING, null, true, false],
             'IsPaidLeave' => [true, self::PROPERTY_TYPE_STRING, null, false, false],
             'ShowOnPayslip' => [true, self::PROPERTY_TYPE_STRING, null, false, false],
+            'LeaveCategoryCode' => [false, self::PROPERTY_TYPE_STRING, null, false, false],
             'LeaveTypeID' => [false, self::PROPERTY_TYPE_STRING, null, false, false],
             'NormalEntitlement' => [false, self::PROPERTY_TYPE_STRING, null, false, false],
             'LeaveLoadingRate' => [false, self::PROPERTY_TYPE_FLOAT, null, false, false],
@@ -200,6 +221,14 @@ class LeaveType extends Remote\Model
     }
 
     /**
+     * @return string
+     */
+    public function getLeaveCategoryCode()
+    {
+        return $this->_data['LeaveCategoryCode'];
+    }
+
+    /**
      * @param string $value
      *
      * @return LeaveType
@@ -208,6 +237,19 @@ class LeaveType extends Remote\Model
     {
         $this->propertyUpdated('ShowOnPayslip', $value);
         $this->_data['ShowOnPayslip'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return LeaveType
+     */
+    public function setLeaveCategoryCode(string $value)
+    {
+        $this->propertyUpdated('LeaveCategoryCode', $value);
+        $this->_data['LeaveCategoryCode'] = $value;
 
         return $this;
     }

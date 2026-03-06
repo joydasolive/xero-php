@@ -71,7 +71,7 @@ abstract class Model implements ObjectInterface, \JsonSerializable, \ArrayAccess
      */
     protected $_application;
 
-    public function __construct(Application $application = null)
+    public function __construct(?Application $application = null)
     {
         $this->_application = $application;
         $this->_dirty = [];
@@ -79,7 +79,7 @@ abstract class Model implements ObjectInterface, \JsonSerializable, \ArrayAccess
         $this->_associated_objects = [];
     }
 
-    public static function make(Application $application = null)
+    public static function make(?Application $application = null)
     {
         return new static($application);
     }
@@ -599,6 +599,8 @@ abstract class Model implements ObjectInterface, \JsonSerializable, \ArrayAccess
 
     /**
      * @param mixed $offset
+     *
+     * @return void
      */
     #[\ReturnTypeWillChange]
     public function offsetUnset($offset)
